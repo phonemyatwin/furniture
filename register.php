@@ -1,3 +1,84 @@
+<!-- Model -->
+<?php
+session_start();
+// Database Connection
+require_once __DIR__ . "/components/connection.php";
+
+// Check if there is a key name register.
+if (isset($_POST['register'])) {
+
+    // User-input data
+    // I used trim function to cut the white spaces and null coalescing operator to catch if null exists.
+    $username = trim($_POST['username'] ?? '');
+    $email = strtolower(trim($_POST['email'] ?? ''));
+    $password = $_POST['password'] ?? '';
+    $confirm_password = $_POST['confirm_password'] ?? '';
+
+    // The only reason I used single if statement to check each condition is to make the code look clean because for me, personally, the nested loop is quite a mess.
+    $errors = [];
+
+    // Username check
+    if ($username === '') {
+        $errors['username'] = 'Username is required.';
+    } else if (strlen($username) < 3 || strlen($username) > 30) {
+        $errors['username'] = 'Username must be 3 to 30 characters.';
+    }
+    if (!isset($errors['username'])) {
+        $stmt = $pdo->prepare("SELECT 1 FROM users WHERE username = :username LIMIT 1");
+        $stmt->execute([
+            ':username' => $username
+        ]);
+        if ($stmt->fetch()) {
+            $errors['username'] = 'This username is already taken.';
+        }
+    }
+
+    // Email check
+    if ($email === '') {
+        $errors['email'] = 'Email is required.';
+        // filter_var() checks $email with the standard FILTER_VALIDATE_EMAIL. It returns $email if it matches, or false if it doesn't. !false === true
+    } else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $errors['email'] = 'Please enter a valid email.';
+    }
+    if (!isset($errors['email'])) {
+        $stmt = $pdo->prepare("SELECT 1 FROM users WHERE email = :email LIMIT 1");
+        $stmt->execute([
+            ':email' => $email
+        ]);
+        if ($stmt->fetch()) {
+            $errors['email'] = 'This email is already registered.';
+        }
+    }
+
+    // Password check
+    if ($password === '') {
+        $errors['password'] = 'Password is required.';
+    } else if (strlen($password) < 8) {
+        $errors['password'] = 'Password must be at least 8 characters.';
+    }
+
+    // Confirm password check
+    if ($confirm_password === '') {
+        $errors['confirm_password'] = 'Please confirm your password';
+    } else if ($password !== $confirm_password) {
+        $errors['confirm_password'] = 'Passwords do not match. Please try again.';
+    }
+
+    if (empty($errors)) {
+        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+        $stmt = $pdo->prepare('INSERT INTO users(username, email, password) VALUES(:username, :email, :hashed_password)');
+        $stmt->execute([
+            ':username' => $username,
+            ':email' => $email,
+            ':hashed_password' => $hashed_password
+        ]);
+        header('location: login.php');
+        exit();
+    }
+}
+?>
+
+<!-- View -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -35,6 +116,9 @@
                             <i class="ri-user-line"></i>
                             <input type="text" id="username" placeholder="Enter your username" name="username" class="box" required>
                         </div>
+                        <?php if (isset($errors['username'])): ?>
+                            <small class=""><?= htmlspecialchars($errors['username']); ?></small>
+                        <?php endif; ?>
                     </div>
                     <div class="auth__field">
                         <label for="email">Email</label>
@@ -42,6 +126,9 @@
                             <i class="ri-mail-line"></i>
                             <input type="email" id="email" placeholder="Enter your email" name="email" class="box" required>
                         </div>
+                        <?php if (isset($errors['email'])): ?>
+                            <small class=""><?= htmlspecialchars($errors['email']); ?></small>
+                        <?php endif; ?>
                     </div>
                     <div class="auth__field">
                         <label for="password">Password</label>
@@ -49,6 +136,9 @@
                             <i class="ri-lock-2-line"></i>
                             <input type="password" id="password" placeholder="Enter your password" name="password" class="box" required>
                         </div>
+                        <?php if (isset($errors['password'])): ?>
+                            <small class=""><?= htmlspecialchars($errors['password']); ?></small>
+                        <?php endif; ?>
                     </div>
                     <div class="auth__field">
                         <label for="confirm_password">Confirm password</label>
@@ -56,8 +146,11 @@
                             <i class="ri-lock-password-line"></i>
                             <input type="password" id="confirm_password" placeholder="Confirm your password" name="confirm_password" class="box" required>
                         </div>
+                        <?php if (isset($errors['confirm_password'])): ?>
+                            <small class=""><?= htmlspecialchars($errors['confirm_password']); ?></small>
+                        <?php endif; ?>
                     </div>
-                    <input type="submit" value="Register Now" name="click" class="btn">
+                    <input type="submit" value="Register Now" name="register" class="btn">
                     <p class="auth__switch">Already have an account? <a href="login.php">Login</a></p>
                 </form>
             </div>
