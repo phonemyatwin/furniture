@@ -117,7 +117,10 @@ if (isset($_POST['register'])) {
                             <input type="text" id="username" placeholder="Enter your username" name="username" class="box" required>
                         </div>
                         <?php if (isset($errors['username'])): ?>
-                            <small class=""><?= htmlspecialchars($errors['username']); ?></small>
+                            <p class="text-lg text-red-600">
+                                <span class="ri-information-line"></span>
+                                <span class=""><?= htmlspecialchars($errors['username']); ?></span>
+                            </p>
                         <?php endif; ?>
                     </div>
                     <div class="auth__field">
@@ -127,7 +130,10 @@ if (isset($_POST['register'])) {
                             <input type="email" id="email" placeholder="Enter your email" name="email" class="box" required>
                         </div>
                         <?php if (isset($errors['email'])): ?>
-                            <small class=""><?= htmlspecialchars($errors['email']); ?></small>
+                            <p class="text-lg text-red-600">
+                                <span class="ri-information-line"></span>
+                                <span class=""><?= htmlspecialchars($errors['email']); ?></span>
+                            </p>
                         <?php endif; ?>
                     </div>
                     <div class="auth__field">
@@ -137,7 +143,10 @@ if (isset($_POST['register'])) {
                             <input type="password" id="password" placeholder="Enter your password" name="password" class="box" required>
                         </div>
                         <?php if (isset($errors['password'])): ?>
-                            <small class=""><?= htmlspecialchars($errors['password']); ?></small>
+                            <p class="text-lg text-red-600">
+                                <span class="ri-information-line"></span>
+                                <span class=""><?= htmlspecialchars($errors['password']); ?></span>
+                            </p>
                         <?php endif; ?>
                     </div>
                     <div class="auth__field">
@@ -147,7 +156,10 @@ if (isset($_POST['register'])) {
                             <input type="password" id="confirm_password" placeholder="Confirm your password" name="confirm_password" class="box" required>
                         </div>
                         <?php if (isset($errors['confirm_password'])): ?>
-                            <small class=""><?= htmlspecialchars($errors['confirm_password']); ?></small>
+                            <p class="text-lg text-red-600">
+                                <span class="ri-information-line"></span>
+                                <span class=""><?= htmlspecialchars($errors['confirm_password']); ?></span>
+                            </p>
                         <?php endif; ?>
                     </div>
                     <input type="submit" value="Register Now" name="register" class="btn">
