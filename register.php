@@ -1,11 +1,12 @@
-<!-- Model -->
 <?php
-session_start();
+// Session start
+require_once __DIR__ . '/components/session_config.php';
 // Database Connection
 require_once __DIR__ . "/components/connection.php";
 
-// Check if there is a key name register.
-if (isset($_POST['register'])) {
+$errors = [];
+// Check if the request method is 'POST' and if there is a key named 'register'.
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
 
     // User-input data
     // I used trim function to cut the white spaces and null coalescing operator to catch if null exists.
@@ -14,10 +15,8 @@ if (isset($_POST['register'])) {
     $password = $_POST['password'] ?? '';
     $confirm_password = $_POST['confirm_password'] ?? '';
 
-    // The only reason I used single if statement to check each condition is to make the code look clean because for me, personally, the nested loop is quite a mess.
-    $errors = [];
-
     // Username check
+    // The only reason I used single if statement to check each condition is to make the code look clean because for me, personally, the nested loop is quite a mess.
     if ($username === '') {
         $errors['username'] = 'Username is required.';
     } else if (strlen($username) < 3 || strlen($username) > 30) {
@@ -64,6 +63,7 @@ if (isset($_POST['register'])) {
         $errors['confirm_password'] = 'Passwords do not match. Please try again.';
     }
 
+    // If there aren't errors, then register.
     if (empty($errors)) {
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
         $stmt = $pdo->prepare('INSERT INTO users(username, email, password) VALUES(:username, :email, :hashed_password)');
@@ -72,13 +72,12 @@ if (isset($_POST['register'])) {
             ':email' => $email,
             ':hashed_password' => $hashed_password
         ]);
-        header('location: login.php');
+        header('Location: login.php');
         exit();
     }
 }
 ?>
 
-<!-- View -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -88,12 +87,12 @@ if (isset($_POST['register'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register | FurnishMe</title>
     <link rel="icon" href="images/favicon.ico">
-    <?php include "components/css.php"; ?>
+    <?php require_once __DIR__ . '/components/css.php'; ?>
 </head>
 
 <body>
-    <?php include "components/header.php"; ?>
-    <?php include "components/navbar.php"; ?>
+    <?php require_once __DIR__ . '/components/header.php.php'; ?>
+    <?php require_once __DIR__ . '/components/navbar.php.php'; ?>
     <section class="heading">
         <h3>register</h3>
         <p><a href="index.php">home</a> / <span>register</span></p>
@@ -114,12 +113,12 @@ if (isset($_POST['register'])) {
                         <label for="username">Username</label>
                         <div class="auth__input">
                             <i class="ri-user-line"></i>
-                            <input type="text" id="username" placeholder="Enter your username" name="username" class="box" required>
+                            <input type="text" id="username" placeholder="Enter your username" value="<?= htmlspecialchars($username ?? ''); ?>" name="username" class="box" required>
                         </div>
                         <?php if (isset($errors['username'])): ?>
-                            <p class="text-lg text-red-600">
+                            <p class="text-lg text-red-600 flex items-center gap-1">
                                 <span class="ri-information-line"></span>
-                                <span class=""><?= htmlspecialchars($errors['username']); ?></span>
+                                <span><?= htmlspecialchars($errors['username']); ?></span>
                             </p>
                         <?php endif; ?>
                     </div>
@@ -127,12 +126,12 @@ if (isset($_POST['register'])) {
                         <label for="email">Email</label>
                         <div class="auth__input">
                             <i class="ri-mail-line"></i>
-                            <input type="email" id="email" placeholder="Enter your email" name="email" class="box" required>
+                            <input type="email" id="email" placeholder="Enter your email" value="<?= htmlspecialchars($email ?? ''); ?>" name="email" class="box" required>
                         </div>
                         <?php if (isset($errors['email'])): ?>
-                            <p class="text-lg text-red-600">
+                            <p class="text-lg text-red-600 flex items-center gap-1">
                                 <span class="ri-information-line"></span>
-                                <span class=""><?= htmlspecialchars($errors['email']); ?></span>
+                                <span><?= htmlspecialchars($errors['email']); ?></span>
                             </p>
                         <?php endif; ?>
                     </div>
@@ -143,9 +142,9 @@ if (isset($_POST['register'])) {
                             <input type="password" id="password" placeholder="Enter your password" name="password" class="box" required>
                         </div>
                         <?php if (isset($errors['password'])): ?>
-                            <p class="text-lg text-red-600">
+                            <p class="text-lg text-red-600 flex items-center gap-1">
                                 <span class="ri-information-line"></span>
-                                <span class=""><?= htmlspecialchars($errors['password']); ?></span>
+                                <span><?= htmlspecialchars($errors['password']); ?></span>
                             </p>
                         <?php endif; ?>
                     </div>
@@ -156,9 +155,9 @@ if (isset($_POST['register'])) {
                             <input type="password" id="confirm_password" placeholder="Confirm your password" name="confirm_password" class="box" required>
                         </div>
                         <?php if (isset($errors['confirm_password'])): ?>
-                            <p class="text-lg text-red-600">
+                            <p class="text-lg text-red-600 flex items-center gap-1">
                                 <span class="ri-information-line"></span>
-                                <span class=""><?= htmlspecialchars($errors['confirm_password']); ?></span>
+                                <span><?= htmlspecialchars($errors['confirm_password']); ?></span>
                             </p>
                         <?php endif; ?>
                     </div>
@@ -168,8 +167,8 @@ if (isset($_POST['register'])) {
             </div>
         </div>
     </section>
-    <?php include "components/footer.php"; ?>
-    <?php include "components/js.php"; ?>
+    <?php require_once __DIR__ . '/components/footer.php'; ?>
+    <?php require_once __DIR__ . '/components/js.php'; ?>
 </body>
 
 </html>

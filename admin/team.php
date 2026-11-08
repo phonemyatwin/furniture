@@ -111,10 +111,10 @@
                     </div>
                 </div>
             </main>
-            <?php include "components/footer.php"; ?>
+            <?php require_once __DIR__ . '/components/footer.php'; ?>
         </div>
     </div>
-    <?php include "components/js.php"; ?>
+    <?php require_once __DIR__ . '/components/js.php'; ?>
 </body>
 
 </html>

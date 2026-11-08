@@ -1,3 +1,52 @@
+<?php
+require_once __DIR__ . '/components/session_config.php';
+// Database connection
+require_once __DIR__ . '/components/connection.php';
+
+if (isset($_SESSION['user_id'])) {
+    header('Location: index.php');
+    exit();
+}
+
+$errors = [];
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
+
+    // User-input data
+    $email = strtolower(trim($_POST['email'] ?? ''));
+    $password = $_POST['password'] ?? '';
+    $remember = isset($_POST['remember']);
+
+    // Email and password check
+    $stmt = $pdo->prepare('SELECT id, email, password FROM users WHERE email = :email LIMIT 1');
+    $stmt->execute([':email' => $email]);
+    $user = $stmt->fetch();
+
+    if (!$user || $password === '' || !password_verify($password, $user['password'])) {
+        $errors['login'] = 'The login information you entered is incorrect.';
+    } else if (empty($errors)) {
+        if ($remember) {
+            setcookie('email_cookie', $email, [
+                'expires' => time() + (60 * 60 * 24 * 30),
+                'path' => '/',
+                'httponly' => true,
+                'samesite' => 'Lax'
+            ]);
+        } else {
+            setcookie('email_cookie', '', [
+                'expires' => time() - 3600,
+                'path' => '/',
+                'httponly' => true,
+                'samesite' => 'Lax'
+            ]);
+        }
+        $_SESSION['user_id'] = $user['id'];
+        header('Location: index.php');
+        exit();
+    }
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -33,15 +82,21 @@
                         <label for="email">Email</label>
                         <div class="auth__input">
                             <i class="ri-mail-line"></i>
-                            <input type="email" id="email" placeholder="Enter your email" name="email" class="box" required>
+                            <input type="email" id="email" placeholder="Enter your email" value="<?= htmlspecialchars($_COOKIE['email_cookie'] ?? ''); ?>" name="email" class="box">
                         </div>
                     </div>
                     <div class="auth__field">
                         <label for="password">Password</label>
                         <div class="auth__input">
                             <i class="ri-lock-2-line"></i>
-                            <input type="password" id="password" placeholder="Enter your password" name="password" class="box" required>
+                            <input type="password" id="password" placeholder="Enter your password" name="password" class="box">
                         </div>
+                        <?php if (isset($errors['login'])): ?>
+                            <p class="text-lg text-red-600 flex items-center gap-1">
+                                <span><i class="ri-information-line"></i></span>
+                                <span><?= htmlspecialchars($errors['login'] ?? ''); ?></span>
+                            </p>
+                        <?php endif; ?>
                     </div>
                     <div class="auth__row">
                         <label class="remember" for="remember-me">
@@ -55,8 +110,8 @@
             </div>
         </div>
     </section>
-    <?php include "components/footer.php"; ?>
-    <?php include "components/js.php"; ?>
+    <?php require_once __DIR__ . '/components/footer.php'; ?>
+    <?php require_once __DIR__ . '/components/js.php'; ?>
 </body>
 
 </html>

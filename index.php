@@ -1,5 +1,17 @@
+<?php
+require_once __DIR__ . '/components/session_config.php';
+require_once __DIR__ . '/components/connection.php';
+if (!isset($_SESSION['user_id'])) {
+    header('Location: login.php');
+    exit();
+}
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,8 +20,9 @@
     <link rel="icon" href="images/favicon.ico">
     <?php include "components/css.php"; ?>
 </head>
+
 <body>
-<?php include "components/header.php"; ?>
+    <?php include "components/header.php"; ?>
     <?php include "components/navbar.php"; ?>
     <section class="home">
         <div class="slides__container">
@@ -65,7 +78,8 @@
             </div>
         </div>
     </section>
-    <?php include "components/footer.php"; ?>
-    <?php include "components/js.php"; ?>
+    <?php require_once __DIR__ . '/components/footer.php'; ?>
+    <?php require_once __DIR__ . '/components/js.php'; ?>
 </body>
+
 </html>

@@ -29,8 +29,8 @@
             <a href="shop.php" class="btn">back to shop</a>
         </div>
     </section>
-    <?php include "components/footer.php"; ?>
-    <?php include "components/js.php"; ?>
+    <?php require_once __DIR__ . '/components/footer.php'; ?>
+    <?php require_once __DIR__ . '/components/js.php'; ?>
 </body>
 
 </html>

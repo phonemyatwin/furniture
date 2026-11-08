@@ -1,15 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="refresh" content="0;url=login.php">
-    <title>Logout | FurnishMe</title>
-    <link rel="icon" href="images/favicon.ico">
-</head>
-
-<body>
-    <p>Redirecting to <a href="login.php">login</a>...</p>
-</body>
-
-</html>
+<?php
+require_once __DIR__ . '/components/session_config.php';
+session_unset();
+session_destroy();
+header('Location: login.php');
+exit();
+?>
