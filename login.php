@@ -25,14 +25,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
         $errors['login'] = 'The login information you entered is incorrect.';
     } else if (empty($errors)) {
         if ($remember) {
-            setcookie('email_cookie', $email, [
+            setcookie('user_email_cookie', $email, [
                 'expires' => time() + (60 * 60 * 24 * 30),
                 'path' => '/',
                 'httponly' => true,
                 'samesite' => 'Lax'
             ]);
         } else {
-            setcookie('email_cookie', '', [
+            setcookie('user_email_cookie', '', [
                 'expires' => time() - 3600,
                 'path' => '/',
                 'httponly' => true,
@@ -82,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
                         <label for="email">Email</label>
                         <div class="auth__input">
                             <i class="ri-mail-line"></i>
-                            <input type="email" id="email" placeholder="Enter your email" value="<?= htmlspecialchars($_COOKIE['email_cookie'] ?? ''); ?>" name="email" class="box">
+                            <input type="email" id="email" placeholder="Enter your email" value="<?= htmlspecialchars($_COOKIE['user_email_cookie'] ?? ''); ?>" name="email" class="box">
                         </div>
                     </div>
                     <div class="auth__field">
