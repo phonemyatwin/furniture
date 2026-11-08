@@ -28,7 +28,7 @@
             <i class="ri-mail-add-line"></i> subscribers
         </a>
         <span class="nav__label">system</span>
-        <a href="index.php">
+        <a href="./admin_logout.php">
             <i class="ri-logout-box-r-line"></i> logout
         </a>
     </nav>
