@@ -1,10 +1,8 @@
 <?php
 require_once __DIR__ . '/components/session_config.php';
 require_once __DIR__ . '/components/connection.php';
-if (!isset($_SESSION['user_id'])) {
-    header('Location: login.php');
-    exit();
-}
+require_once __DIR__ . '/components/session_check.php';
+
 
 
 ?>
@@ -18,12 +16,12 @@ if (!isset($_SESSION['user_id'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home | FurnishMe</title>
     <link rel="icon" href="images/favicon.ico">
-    <?php include "components/css.php"; ?>
+    <?php require_once __DIR__ . '/components/css.php'; ?>
 </head>
 
 <body>
-    <?php include "components/header.php"; ?>
-    <?php include "components/navbar.php"; ?>
+    <?php require_once __DIR__ . '/components/header.php'; ?>
+    <?php require_once __DIR__ . '/components/navbar.php'; ?>
     <section class="home">
         <div class="slides__container">
             <div class="slide active">

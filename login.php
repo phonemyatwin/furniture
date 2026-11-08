@@ -56,12 +56,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login | FurnishMe</title>
     <link rel="icon" href="images/favicon.ico">
-    <?php include "components/css.php"; ?>
+    <?php require_once __DIR__ . '/components/css.php'; ?>
 </head>
 
 <body>
-    <?php include "components/header.php"; ?>
-    <?php include "components/navbar.php"; ?>
+    <?php require_once __DIR__ . '/components/header.php'; ?>
+    <?php require_once __DIR__ . '/components/navbar.php'; ?>
     <section class="heading">
         <h3>login</h3>
         <p><a href="index.php">home</a> / <span>login</span></p>

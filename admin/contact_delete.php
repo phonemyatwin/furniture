@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Delete Contact | FurnishMe</title>
     <link rel="icon" href="../images/favicon.ico">
-    <?php include "components/css.php"; ?>
+    <?php require_once __DIR__ . '/components/css.php'; ?>
 </head>
 
 <body class="admin__body">
