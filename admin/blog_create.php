@@ -11,13 +11,22 @@ require_once __DIR__ . '/components/admin_session_check.php';
 $errors = [];
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create'])) {
     $title = trim($_POST['title'] ?? '');
-    $author = trim($_POST['author'] ?? 'Anonymous');
-    $image = time() . '_' . $_FILES['image']['name'];
+    $author = trim($_POST['author'] ?? '');
     $description = $_POST['description'] ?? '';
 
     // Title check
     if ($title === '') {
         $errors['title'] = 'Title is required.';
+    }
+
+    // Author check
+    if($author === ''){
+        $author = 'Anonymous';
+    }
+
+    // Image check
+    if (!isset($_FILES['image']) || $_FILES['image']['error'] !== UPLOAD_ERR_OK) {
+        $errors['image'] = 'Please upload a valid image.';
     }
 
     // Description check
@@ -26,6 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create'])) {
     }
 
     if (empty($errors)) {
+        $image = time() . '_' . $_FILES['image']['name'];
         move_uploaded_file($_FILES['image']['tmp_name'], '../media/' . $image);
         $stmt = $pdo->prepare('INSERT INTO blogs(title, author, image, description) VALUES(:title, :author, :image, :description)');
         $stmt->execute([
@@ -96,6 +106,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create'])) {
                                         <i class="ri-image-line"></i>
                                         <input type="file" id="image" name="image" class="box" accept="image/*" required>
                                     </div>
+                                    <?php if (isset($errors['image'])): ?>
+                                        <p class="text-lg text-red-600 flex items-center gap-1">
+                                            <span><i class="ri-information-line"></i></span>
+                                            <span><?= htmlspecialchars($errors['image']); ?></span>
+                                        </p>
+                                    <?php endif; ?>
                                 </div>
                                 <div class="auth__field">
                                     <label for="description">Description</label>

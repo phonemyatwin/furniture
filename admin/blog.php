@@ -51,7 +51,7 @@ $stmt = $pdo->query('SELECT * FROM blogs');
                             <tbody>
                                 <?php while ($blog = $stmt->fetch()): ?>
                                     <tr>
-                                        <td><?= $count = $count + 1; ?></td>
+                                        <td><?= ++$count; ?></td>
                                         <td><img src="<?= htmlspecialchars(!empty($blog['image']) ? '../media/' . $blog['image'] : '../images/placeholder.svg'); ?>" alt="<?= htmlspecialchars($blog['title']); ?>" style="width:4rem;height:4rem;object-fit:cover;border-radius:.6rem;"></td>
                                         <td><?= htmlspecialchars($blog['title']); ?></td>
                                         <td><?= htmlspecialchars($blog['author']); ?></td>
