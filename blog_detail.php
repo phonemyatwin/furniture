@@ -1,3 +1,14 @@
+<?php
+require_once __DIR__ . '/components/session_config.php';
+require_once __DIR__ . '/components/connection.php';
+require_once __DIR__ . '/components/session_check.php';
+
+$id = $_GET['id'] ?? '';
+$stmt = $pdo->prepare('SELECT * FROM blogs WHERE id = :id');
+$stmt->execute([':id' => $id]);
+$blog = $stmt->fetch();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -19,17 +30,15 @@
     </section>
     <section class="blog__detail">
         <div class="image">
-            <img src="images/blog-1.jpg" alt="blog title goes here ...">
+            <img src="<?= htmlspecialchars(!empty($blog['image']) ? './media/' . $blog['image'] : './images/placeholder.svg'); ?>" alt="<?= htmlspecialchars($blog['title']) ?? 'placeholder'; ?>">
         </div>
         <div class="content">
             <div class="icons">
-                <a href="#"> <i class="fas fa-calendar"></i> 21st may, 2023</a>
-                <a href="#"> <i class="fas fa-user"></i> by admin</a>
+                <p> <i class="fas fa-calendar"></i><?= htmlspecialchars($blog['created_at'] ?? 'Date'); ?></p>
+                <p> <i class="fas fa-user"></i><?= htmlspecialchars($blog['author'] ?? 'Author'); ?></p>
             </div>
-            <h3>blog title goes here ...</h3>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed minus, iusto quasi laboriosam voluptatibus at esse maxime quod quae mollitia molestiae magnam aperiam aspernatur eius obcaecati enim eveniet quis fugit!</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid fugit labore facere non autem soluta tempora natus, sequi obcaecati esse officia aspernatur impedit dignissimos ut porro praesentium similique numquam magnam.</p>
-            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Numquam sequi illo cum expedita, eius laboriosam? Blanditiis quisquam, iure nisi, ex amet odit obcaecati eaque voluptatibus porro repudiandae sit libero debitis!</p>
+            <h3><?= htmlspecialchars($blog['title'] ?? 'Title'); ?></h3>
+            <p><?= htmlspecialchars($blog['description'] ?? 'Description...'); ?></p>
             <a href="blog.php" class="btn">back to blog</a>
         </div>
     </section>
