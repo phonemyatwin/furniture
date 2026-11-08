@@ -1,3 +1,14 @@
+<?php
+// Session start
+require_once __DIR__ . '/../components/session_config.php';
+
+// Database connect 
+require_once __DIR__ . '/../components/connection.php';
+
+// Admin session check
+require_once __DIR__ . '/components/admin_session_check.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 

@@ -1,6 +1,8 @@
 <?php
+// Session start
 require_once __DIR__ . '/components/session_config.php';
-// Database connection
+
+// Database connect
 require_once __DIR__ . '/components/connection.php';
 
 if (isset($_SESSION['user_id'])) {

@@ -1,6 +1,11 @@
 <?php
+// Session start
 require_once __DIR__ . '/components/session_config.php';
+
+// Database connect
 require_once __DIR__ . '/components/connection.php';
+
+// User session check
 require_once __DIR__ . '/components/user_session_check.php';
 
 $stmt = $pdo->query('SELECT * FROM blogs ORDER BY id DESC');

@@ -1,5 +1,8 @@
 <?php
+// Session start
 require_once __DIR__ . '/../components/session_config.php';
+
+// Database connect 
 require_once __DIR__ . '/../components/connection.php';
 
 $errors = [];
