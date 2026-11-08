@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/components/session_config.php';
 require_once __DIR__ . '/components/connection.php';
-require_once __DIR__ . '/components/session_check.php';
+require_once __DIR__ . '/components/user_session_check.php';
 
 if (empty($_GET['id'])) {
     header('Location: blog.php');

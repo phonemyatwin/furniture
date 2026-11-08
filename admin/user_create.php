@@ -1,3 +1,8 @@
+<?php
+require_once __DIR__ . '/../components/';
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,9 +16,9 @@
 
 <body class="admin__body">
     <div class="admin__shell">
-        <?php include "components/sidebar.php"; ?>
+        <?php require_once __DIR__ . '/components/sidebar.php'; ?>
         <div class="admin__main">
-            <?php include "components/topbar.php"; ?>
+            <?php require_once __DIR__ . '/components/topbar.php'; ?>
             <main class="admin__content">
                 <div class="panel">
                     <div class="panel__head">

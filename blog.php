@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/components/session_config.php';
 require_once __DIR__ . '/components/connection.php';
-require_once __DIR__ . '/components/session_check.php';
+require_once __DIR__ . '/components/user_session_check.php';
 
 $stmt = $pdo->query('SELECT * FROM blogs ORDER BY id DESC');
 $blogs = $stmt->fetchAll();
@@ -29,7 +29,7 @@ $blogs = $stmt->fetchAll();
     <section class="blog">
         <div class="box__container">
             <?php if (!empty($blogs)): ?>
-                <?php foreach($blogs as $blog): ?>
+                <?php foreach ($blogs as $blog): ?>
                     <div class="box">
                         <div class="image">
                             <img src="<?= htmlspecialchars(!empty($blog['image']) ? './media/' . $blog['image'] : './images/placeholder.svg'); ?>" alt="<?= htmlspecialchars($blog['title']) ?? 'Placeholder'; ?>">
