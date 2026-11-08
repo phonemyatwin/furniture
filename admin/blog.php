@@ -7,6 +7,10 @@ require_once __DIR__ . '/../components/connection.php';
 
 // Admin session check
 require_once __DIR__ . '/components/admin_session_check.php';
+
+
+$count = 0;
+$stmt = $pdo->query('SELECT * FROM blogs');
 ?>
 
 <!DOCTYPE html>
@@ -45,78 +49,20 @@ require_once __DIR__ . '/components/admin_session_check.php';
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>#1</td>
-                                    <td><img src="../images/blog-1.jpg" alt="blog title" style="width:4rem;height:4rem;object-fit:cover;border-radius:.6rem;"></td>
-                                    <td>blog title goes here ...</td>
-                                    <td>admin</td>
-                                    <td>
-                                        <div class="table__actions">
-                                            <a class="admin__btn sm ghost" href="blog_update.php?id=1"><i class="ri-pencil-line"></i> edit</a>
-                                            <a class="admin__btn sm danger" href="blog_delete.php?id=1"><i class="ri-delete-bin-line"></i> delete</a>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>#2</td>
-                                    <td><img src="../images/blog-2.jpg" alt="blog title" style="width:4rem;height:4rem;object-fit:cover;border-radius:.6rem;"></td>
-                                    <td>blog title goes here ...</td>
-                                    <td>admin</td>
-                                    <td>
-                                        <div class="table__actions">
-                                            <a class="admin__btn sm ghost" href="blog_update.php?id=2"><i class="ri-pencil-line"></i> edit</a>
-                                            <a class="admin__btn sm danger" href="blog_delete.php?id=2"><i class="ri-delete-bin-line"></i> delete</a>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>#3</td>
-                                    <td><img src="../images/blog-3.jpg" alt="blog title" style="width:4rem;height:4rem;object-fit:cover;border-radius:.6rem;"></td>
-                                    <td>blog title goes here ...</td>
-                                    <td>admin</td>
-                                    <td>
-                                        <div class="table__actions">
-                                            <a class="admin__btn sm ghost" href="blog_update.php?id=3"><i class="ri-pencil-line"></i> edit</a>
-                                            <a class="admin__btn sm danger" href="blog_delete.php?id=3"><i class="ri-delete-bin-line"></i> delete</a>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>#4</td>
-                                    <td><img src="../images/blog-4.jpg" alt="blog title" style="width:4rem;height:4rem;object-fit:cover;border-radius:.6rem;"></td>
-                                    <td>blog title goes here ...</td>
-                                    <td>admin</td>
-                                    <td>
-                                        <div class="table__actions">
-                                            <a class="admin__btn sm ghost" href="blog_update.php?id=4"><i class="ri-pencil-line"></i> edit</a>
-                                            <a class="admin__btn sm danger" href="blog_delete.php?id=4"><i class="ri-delete-bin-line"></i> delete</a>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>#5</td>
-                                    <td><img src="../images/blog-5.jpg" alt="blog title" style="width:4rem;height:4rem;object-fit:cover;border-radius:.6rem;"></td>
-                                    <td>blog title goes here ...</td>
-                                    <td>admin</td>
-                                    <td>
-                                        <div class="table__actions">
-                                            <a class="admin__btn sm ghost" href="blog_update.php?id=5"><i class="ri-pencil-line"></i> edit</a>
-                                            <a class="admin__btn sm danger" href="blog_delete.php?id=5"><i class="ri-delete-bin-line"></i> delete</a>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>#6</td>
-                                    <td><img src="../images/blog-6.jpg" alt="blog title" style="width:4rem;height:4rem;object-fit:cover;border-radius:.6rem;"></td>
-                                    <td>blog title goes here ...</td>
-                                    <td>admin</td>
-                                    <td>
-                                        <div class="table__actions">
-                                            <a class="admin__btn sm ghost" href="blog_update.php?id=6"><i class="ri-pencil-line"></i> edit</a>
-                                            <a class="admin__btn sm danger" href="blog_delete.php?id=6"><i class="ri-delete-bin-line"></i> delete</a>
-                                        </div>
-                                    </td>
-                                </tr>
+                                <?php while ($blog = $stmt->fetch()): ?>
+                                    <tr>
+                                        <td><?= $count = $count + 1; ?></td>
+                                        <td><img src="<?= htmlspecialchars(!empty($blog['image']) ? '../media/' . $blog['image'] : '../images/placeholder.svg'); ?>" alt="<?= htmlspecialchars($blog['title']); ?>" style="width:4rem;height:4rem;object-fit:cover;border-radius:.6rem;"></td>
+                                        <td><?= htmlspecialchars($blog['title']); ?></td>
+                                        <td><?= htmlspecialchars($blog['author']); ?></td>
+                                        <td>
+                                            <div class="table__actions">
+                                                <a class="admin__btn sm ghost" href="blog_update.php?id=<?= htmlspecialchars($blog['id']); ?>"><i class="ri-pencil-line"></i> edit</a>
+                                                <a class="admin__btn sm danger" href="blog_delete.php?id=<?= htmlspecialchars($blog['id']); ?>"><i class="ri-delete-bin-line"></i> delete</a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                <?php endwhile; ?>
                             </tbody>
                         </table>
                     </div>
