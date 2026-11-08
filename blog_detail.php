@@ -3,7 +3,12 @@ require_once __DIR__ . '/components/session_config.php';
 require_once __DIR__ . '/components/connection.php';
 require_once __DIR__ . '/components/session_check.php';
 
-$id = $_GET['id'] ?? '';
+if (empty($_GET['id'])) {
+    header('Location: blog.php');
+    exit();
+}
+
+$id = $_GET['id'];
 $stmt = $pdo->prepare('SELECT * FROM blogs WHERE id = :id');
 $stmt->execute([':id' => $id]);
 $blog = $stmt->fetch();
