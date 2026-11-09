@@ -44,8 +44,14 @@ $blog = $stmt->fetch();
         </div>
         <div class="content">
             <div class="icons">
-                <p> <i class="fas fa-calendar"></i><?= htmlspecialchars($blog['created_at'] ?? 'Date'); ?></p>
-                <p> <i class="fas fa-user"></i><?= htmlspecialchars($blog['author'] ?? 'Author'); ?></p>
+                <p class="flex items-center gap-1">
+                    <span><i class="fas fa-calendar"></i></span>
+                    <span><?= htmlspecialchars($blog['created_at'] ?? 'Date'); ?></span>
+                </p>
+                <p class="flex items-center gap-1">
+                    <span><i class="fas fa-user"></i></span>
+                    <span><?= htmlspecialchars($blog['author'] ?? 'Author'); ?></span>
+                </p>
             </div>
             <h3><?= htmlspecialchars($blog['title'] ?? 'Title'); ?></h3>
             <p><?= htmlspecialchars($blog['description'] ?? 'Description...'); ?></p>

@@ -44,8 +44,14 @@ $blogs = $stmt->fetchAll();
                             <p class='line-clamp-3'><?= htmlspecialchars($blog['description'] ?? 'Add description...'); ?></p>
                             <a href="blog_detail.php?id=<?= htmlspecialchars($blog['id']); ?>" class="btn">read more</a>
                             <div class="icons">
-                                <p> <i class="fas fa-calendar"></i><?= htmlspecialchars($blog['created_at']); ?></p>
-                                <p> <i class="fas fa-user"></i><?= htmlspecialchars($blog['author'] ?? 'Add author'); ?></p>
+                                <p class="flex items-center gap-1">
+                                    <span><i class="fas fa-calendar"></i></span>
+                                    <span><?= htmlspecialchars($blog['created_at']); ?></span>
+                                </p>
+                                <p class="flex items-center gap-1">
+                                    <span><i class="fas fa-user"></i></span>
+                                    <span><?= htmlspecialchars($blog['author'] ?? 'Add author'); ?></span>
+                                </p>
                             </div>
                         </div>
                     </div>
